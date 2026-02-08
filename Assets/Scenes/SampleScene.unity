@@ -151,9 +151,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_LinearDamping: 1
+  m_AngularDamping: 5
+  m_GravityScale: 0.7
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -161,7 +161,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
@@ -239,6 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7123e3302e5939448cb1e163276a8b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Lander
+  rocketSpeed: 700
+  turnSpeed: 100
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
