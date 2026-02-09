@@ -6,6 +6,8 @@ public class Lander : MonoBehaviour
 {
     private Rigidbody2D landerRigidbody2D;
 
+    public static Lander Instance { get; private set; }
+
     [Header("Rocket Speed")]
     [SerializeField] private float rocketSpeed = 700f;
     [SerializeField] private float turnSpeed = 100f;
@@ -16,6 +18,12 @@ public class Lander : MonoBehaviour
     public event EventHandler OnLeftForce;
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
+    public event EventHandler OnCoinPickup;
+    public event EventHandler<OnLandedEventArgs> OnLanded;
+    public class OnLandedEventArgs : EventArgs
+    {
+        public int score;
+    }
 
     private float fuelAmount = 10f;
 
@@ -23,6 +31,7 @@ public class Lander : MonoBehaviour
     private void Awake()
     {
         landerRigidbody2D = gameObject.GetComponent<Rigidbody2D>();
+        Instance = this;
     }
 
     private void FixedUpdate()
@@ -96,7 +105,7 @@ public class Lander : MonoBehaviour
 
         int score = Mathf.RoundToInt((landingAngleScore + landingSpeedScore) * landingPad.ScoreMultiplier());
 
-        Debug.Log($"Score: {score}");
+        OnLanded?.Invoke(this, new OnLandedEventArgs { score = score });
     }
 
     private void ConsumeFuel()
@@ -112,6 +121,12 @@ public class Lander : MonoBehaviour
             float addFuelAmount = 10f;
             fuelAmount += addFuelAmount;
             fuelPickup.DestroySelf();
+        }
+
+        if (collision2D.gameObject.TryGetComponent<CoinPickup>(out CoinPickup coinPickup))
+        {
+            OnCoinPickup?.Invoke(this, EventArgs.Empty);
+            coinPickup.DestroySelf();
         }
     }
 
