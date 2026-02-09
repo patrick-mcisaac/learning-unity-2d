@@ -12,4 +12,5 @@ public class LandingPadVisual : MonoBehaviour
         scoreMultiplierTextMesh.text = $"x{landingPad.ScoreMultiplier()}";
 
     }
+
 }

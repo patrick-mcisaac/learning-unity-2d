@@ -12,6 +12,10 @@ public class Lander : MonoBehaviour
 
     private float softLandingVelocityMagnitude = 3f;
 
+    public event EventHandler OnUpForce;
+    public event EventHandler OnLeftForce;
+    public event EventHandler OnRightForce;
+    public event EventHandler OnBeforeForce;
 
 
 
@@ -22,17 +26,21 @@ public class Lander : MonoBehaviour
 
     private void FixedUpdate()
     {
+        OnBeforeForce?.Invoke(this, EventArgs.Empty);
         if (Keyboard.current.upArrowKey.isPressed)
         {
             landerRigidbody2D.AddForce(rocketSpeed * transform.up * Time.deltaTime);
+            OnUpForce?.Invoke(this, EventArgs.Empty);
         }
         if (Keyboard.current.leftArrowKey.isPressed)
         {
             landerRigidbody2D.AddTorque(turnSpeed * Time.deltaTime);
+            OnLeftForce?.Invoke(this, EventArgs.Empty);
         }
         if (Keyboard.current.rightArrowKey.isPressed)
         {
             landerRigidbody2D.AddTorque(-turnSpeed * Time.deltaTime);
+            OnRightForce?.Invoke(this, EventArgs.Empty);
         }
     }
 
