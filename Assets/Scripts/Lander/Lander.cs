@@ -22,14 +22,29 @@ public class Lander : MonoBehaviour
     public event EventHandler<OnLandedEventArgs> OnLanded;
     public class OnLandedEventArgs : EventArgs
     {
+        public LandingType LandingType;
         public int score;
+        public float dotVector;
+        public float landingSpeed;
+        public float ScoreMultiplier;
+
     }
 
-    private float fuelAmount = 10f;
+    public enum LandingType
+    {
+        Success,
+        WrongLandingArea,
+        TooSteepAngle,
+        TooFastLanding
+    }
+
+    private float fuelAmount;
+    private float fuelAmountMax = 10f;
 
 
     private void Awake()
     {
+        fuelAmount = fuelAmountMax;
         landerRigidbody2D = gameObject.GetComponent<Rigidbody2D>();
         Instance = this;
     }
@@ -72,7 +87,14 @@ public class Lander : MonoBehaviour
 
         if (!collision2D.gameObject.TryGetComponent(out LandingPad landingPad))
         {
-            Debug.Log("crashed on terrain");
+            OnLanded?.Invoke(this, new OnLandedEventArgs
+            {
+                LandingType = LandingType.WrongLandingArea,
+                dotVector = 0,
+                landingSpeed = 0,
+                ScoreMultiplier = 0,
+                score = 0
+            });
             return;
         }
 
@@ -80,7 +102,14 @@ public class Lander : MonoBehaviour
 
         if (relativeVelocityMagnitude > softLandingVelocityMagnitude)
         {
-            Debug.Log("Landed too hard");
+            OnLanded?.Invoke(this, new OnLandedEventArgs
+            {
+                LandingType = LandingType.TooFastLanding,
+                dotVector = 0f,
+                landingSpeed = relativeVelocityMagnitude,
+                ScoreMultiplier = 0,
+                score = 0
+            });
             return;
         }
 
@@ -88,7 +117,14 @@ public class Lander : MonoBehaviour
         float minDotVector = .97f;
         if (dotVector < minDotVector)
         {
-            Debug.Log("Landed on a too steep an angle");
+            OnLanded?.Invoke(this, new OnLandedEventArgs
+            {
+                LandingType = LandingType.TooSteepAngle,
+                dotVector = dotVector,
+                landingSpeed = relativeVelocityMagnitude,
+                ScoreMultiplier = 0,
+                score = 0
+            });
             return;
         }
 
@@ -105,7 +141,14 @@ public class Lander : MonoBehaviour
 
         int score = Mathf.RoundToInt((landingAngleScore + landingSpeedScore) * landingPad.ScoreMultiplier());
 
-        OnLanded?.Invoke(this, new OnLandedEventArgs { score = score });
+        OnLanded?.Invoke(this, new OnLandedEventArgs
+        {
+            LandingType = LandingType.Success,
+            dotVector = dotVector,
+            landingSpeed = relativeVelocityMagnitude,
+            ScoreMultiplier = landingPad.ScoreMultiplier(),
+            score = score
+        });
     }
 
     private void ConsumeFuel()
@@ -120,6 +163,10 @@ public class Lander : MonoBehaviour
         {
             float addFuelAmount = 10f;
             fuelAmount += addFuelAmount;
+            if (fuelAmount > fuelAmountMax)
+            {
+                fuelAmount = fuelAmountMax;
+            }
             fuelPickup.DestroySelf();
         }
 
@@ -130,4 +177,23 @@ public class Lander : MonoBehaviour
         }
     }
 
+    public float GetSpeedX()
+    {
+        return landerRigidbody2D.linearVelocity.x;
+    }
+
+    public float GetSpeedY()
+    {
+        return landerRigidbody2D.linearVelocity.y;
+    }
+
+    public float GetFuel()
+    {
+        return fuelAmount;
+    }
+
+    public float GetFuelAmountNormalized()
+    {
+        return fuelAmount / fuelAmountMax;
+    }
 }

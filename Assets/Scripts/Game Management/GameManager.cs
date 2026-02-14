@@ -5,11 +5,33 @@ using UnityEngine;
 public sealed class GameManager : MonoBehaviour
 {
     private int score = 0;
+    private float time;
+
+    public static GameManager Instance;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     private void Start()
     {
         Lander.Instance.OnCoinPickup += LanderOnCoinPickup;
         Lander.Instance.OnLanded += LanderOnLanded;
+        DontDestroyOnLoad(this.gameObject);
+
+    }
+
+    private void Update()
+    {
+        time += Time.deltaTime;
     }
 
     private void LanderOnCoinPickup(object sender, EventArgs e)
@@ -28,7 +50,15 @@ public sealed class GameManager : MonoBehaviour
         Debug.Log(score);
     }
 
+    public int GetScore()
+    {
+        return score;
+    }
 
+    public float GetTime()
+    {
+        return time;
+    }
 
 
 }

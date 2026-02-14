@@ -1,0 +1,36 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class StatsUI : MonoBehaviour
+{
+    [SerializeField] private TextMeshProUGUI StatsTextMesh;
+    [Header("Direction Arrows")]
+    [SerializeField] private GameObject speedUpArrow;
+    [SerializeField] private GameObject speedDownArrow;
+    [SerializeField] private GameObject speedLeftArrow;
+    [SerializeField] private GameObject speedRightArrow;
+    [Header("Fuel Bar")]
+    [SerializeField] private Image fuelBar;
+
+    private void Update()
+    {
+        UpdateStatsTextMesh();
+    }
+
+    private void UpdateStatsTextMesh()
+    {
+        speedUpArrow.SetActive(Lander.Instance.GetSpeedY() >= 0);
+        speedDownArrow.SetActive(Lander.Instance.GetSpeedY() < 0);
+        speedRightArrow.SetActive(Lander.Instance.GetSpeedX() >= 0);
+        speedLeftArrow.SetActive(Lander.Instance.GetSpeedX() < 0);
+
+        fuelBar.fillAmount = Lander.Instance.GetFuelAmountNormalized();
+
+        StatsTextMesh.text =
+            GameManager.Instance.GetScore() + "\n" +
+            Mathf.Round(GameManager.Instance.GetTime()) + "\n" +
+            Mathf.Abs(Mathf.Round(Lander.Instance.GetSpeedX() * 10f)) + "\n" +
+            Mathf.Abs(Mathf.Round(Lander.Instance.GetSpeedY() * 10f));
+    }
+}
