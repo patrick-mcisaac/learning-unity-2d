@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Thrusters : MonoBehaviour
@@ -7,6 +8,8 @@ public class Thrusters : MonoBehaviour
     [SerializeField] private ParticleSystem leftThrusterParticleSystem;
     [SerializeField] private ParticleSystem middleThrusterParticleSystem;
     [SerializeField] private ParticleSystem rightThrusterParticleSystem;
+
+    [SerializeField] private GameObject landerExplosionVfx;
 
     private Lander lander;
 
@@ -18,6 +21,7 @@ public class Thrusters : MonoBehaviour
         lander.OnLeftForce += LanderOnLeftForce;
         lander.OnRightForce += LanderOnRightForce;
         lander.OnBeforeForce += LanderOnBeforeForce;
+        lander.OnLanded += Lander_OnLanded;
 
         SetEnableParticleSystem(leftThrusterParticleSystem, false);
         SetEnableParticleSystem(middleThrusterParticleSystem, false);
@@ -31,6 +35,20 @@ public class Thrusters : MonoBehaviour
     {
         ParticleSystem.EmissionModule emission = particleSystem.emission;
         emission.enabled = enabled;
+    }
+
+    private void Lander_OnLanded(object sender, Lander.OnLandedEventArgs e)
+    {
+        switch (e.LandingType)
+        {
+            case Lander.LandingType.TooFastLanding:
+            case Lander.LandingType.TooSteepAngle:
+            case Lander.LandingType.WrongLandingArea:
+                // Crash
+                Instantiate(landerExplosionVfx, transform.position, Quaternion.identity);
+                gameObject.SetActive(false);
+                break;
+        }
     }
 
     private void LanderOnBeforeForce(object sender, EventArgs e)
