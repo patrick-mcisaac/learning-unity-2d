@@ -20,6 +20,7 @@ public class Lander : MonoBehaviour
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
     public event EventHandler OnCoinPickup;
+    public event EventHandler OnFuelPickup;
     public event EventHandler<OnStateChangeArgs> OnStateChange;
     public class OnStateChangeArgs : EventArgs
     {
@@ -96,6 +97,7 @@ public class Lander : MonoBehaviour
                     GameInput.Instance.GetMovementInputVector2() != Vector2.zero)
                 {
                     ConsumeFuel();
+
                 }
                 float gamepadDeadzone = .4f;
                 if (GameInput.Instance.IsUpActionPressed() || GameInput.Instance.GetMovementInputVector2().y > gamepadDeadzone)
@@ -210,6 +212,7 @@ public class Lander : MonoBehaviour
             {
                 fuelAmount = fuelAmountMax;
             }
+            OnFuelPickup?.Invoke(this, EventArgs.Empty);
             fuelPickup.DestroySelf();
         }
 
