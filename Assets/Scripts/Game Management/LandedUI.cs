@@ -58,6 +58,7 @@ public class LandedUI : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
+        restartButton.Select();
     }
     private void Hide()
     {
