@@ -10,4 +10,9 @@ public class LaunchPad : MonoBehaviour
     {
         launchPadText.text = $"x{launchPadBonusPoints}";
     }
+
+    public int GetBonusPoints()
+    {
+        return launchPadBonusPoints;
+    }
 }

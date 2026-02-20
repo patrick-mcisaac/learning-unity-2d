@@ -1,6 +1,8 @@
 using System;
+using System.Xml.Schema;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 public class Lander : MonoBehaviour
@@ -19,6 +21,7 @@ public class Lander : MonoBehaviour
     public event EventHandler OnLeftForce;
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
+    public event EventHandler OnGameStart;
 
     // Singleton
     public static Lander Instance;
@@ -32,9 +35,22 @@ public class Lander : MonoBehaviour
         fuelAmount = maxFuel;
     }
 
+    private void Start()
+    {
+        GameManager.Instance.state = GameManager.GameState.WaitingToStart;
+    }
+
     // Move Lander
     private void Update()
     {
+        if (GameManager.Instance.state == GameManager.GameState.WaitingToStart
+        && Keyboard.current.wKey.isPressed
+        || Keyboard.current.dKey.isPressed
+        || Keyboard.current.aKey.isPressed)
+        {
+            GameManager.Instance.state = GameManager.GameState.Normal;
+            OnGameStart?.Invoke(this, EventArgs.Empty);
+        }
         OnBeforeForce?.Invoke(this, EventArgs.Empty);
         if (fuelAmount <= 0)
         {
@@ -75,6 +91,41 @@ public class Lander : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Handle landing and crashes
+        if (!collision.gameObject.TryGetComponent<LaunchPad>(out LaunchPad launchPad))
+        {
+            Debug.Log("Crash!");
+            return;
+        }
+
+        // Get angle of impact
+        float dot = Vector2.Dot(transform.up, Vector2.up);
+        float minAngle = 0.95f;
+
+        if (dot < minAngle)
+        {
+            Debug.Log("Too steep angle, CRASH!");
+            return;
+        }
+
+        // Get speed
+        float speed = collision.relativeVelocity.magnitude;
+        float maxSpeed = 4f;
+        if (speed > maxSpeed)
+        {
+            Debug.Log("TOO FAST!! CRASH!");
+            return;
+        }
+
+        Debug.Log("Successful Landing!");
+        // Add points for successful landing
+        float baseScore = 100f;
+        float landingSpeedScore = Mathf.Clamp01(1f - (speed / maxSpeed));
+        float dotScore = Mathf.Max(0f, dot);
+
+        int finalScore = (int)MathF.Round(((landingSpeedScore + dotScore) / 2) * baseScore);
+
+        GameManager.Instance.AddScore(finalScore * launchPad.GetBonusPoints());
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

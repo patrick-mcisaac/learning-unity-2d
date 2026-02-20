@@ -18,11 +18,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 974198247572917509, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.65
+      value: 32.87
       objectReference: {fileID: 0}
     - target: {fileID: 974198247572917509, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.29
+      value: 16.45
       objectReference: {fileID: 0}
     - target: {fileID: 974198247572917509, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -56,6 +56,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2636076953996939804, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
+      propertyPath: m_Size.x
+      value: 3.1019745
+      objectReference: {fileID: 0}
+    - target: {fileID: 2636076953996939804, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
+      propertyPath: m_Size.y
+      value: 0.8087621
+      objectReference: {fileID: 0}
+    - target: {fileID: 2636076953996939804, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.042980194
+      objectReference: {fileID: 0}
+    - target: {fileID: 2636076953996939804, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.0066239834
+      objectReference: {fileID: 0}
     - target: {fileID: 5599473118360866566, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.84
@@ -70,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5599473118360866566, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.3479
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5599473118360866566, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.2007
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5599473118360866566, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -86,7 +102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7257811697641679529, guid: 532cd814e9b854a4885fcf90d12ca4b4, type: 3}
       propertyPath: m_Name
-      value: LaunchPad Variant
+      value: LaunchPad_5x
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
