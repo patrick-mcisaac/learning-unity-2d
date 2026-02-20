@@ -42,6 +42,20 @@ public class Lander : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.TryGetComponent<FuelPickup>(out FuelPickup fuelPickup))
+        {
+            // add fuel
 
+            // Destroy the fuel pickup
+
+            fuelPickup.DestroySelf();
+        }
+        if (collision.gameObject.TryGetComponent<CoinPickup>(out CoinPickup coinPickup))
+        {
+            // add fuel
+
+            // Destroy the coin pickup
+            coinPickup.DestroySelf();
+        }
     }
 }

@@ -327,6 +327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 386768483}
   - component: {fileID: 386768484}
+  - component: {fileID: 386768485}
   m_Layer: 0
   m_Name: FuelPickup
   m_TagString: Untagged
@@ -343,7 +344,7 @@ Transform:
   m_GameObject: {fileID: 386768482}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.48, y: 2.34, z: 0}
+  m_LocalPosition: {x: -0.08, y: 3.27, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -396,6 +397,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.64972234, y: 0.72634554}
   m_EdgeRadius: 0
+--- !u!114 &386768485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386768482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a7cd812183767498a4ae7e5b4ee09b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelPickup
 --- !u!1 &657696677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1606,6 +1619,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1807400037}
   - component: {fileID: 1807400038}
+  - component: {fileID: 1807400039}
   m_Layer: 0
   m_Name: CoinPickup
   m_TagString: Untagged
@@ -1665,11 +1679,24 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &1807400039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807400036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78cf853c62b707e42b5d23dbb3bcf9fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoinPickup
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1504187641}
+  - {fileID: 192352568}
   - {fileID: 1280325772}
   - {fileID: 657696678}
   - {fileID: 1730421936}
@@ -1678,4 +1705,3 @@ SceneRoots:
   - {fileID: 386768483}
   - {fileID: 1807400037}
   - {fileID: 798300931}
-  - {fileID: 192352568}
