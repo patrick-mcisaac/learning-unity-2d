@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,9 @@ public class Lander : MonoBehaviour
     [Header("Lander Speed")]
     [SerializeField] private float landerSpeed = 550f;
     [SerializeField] private float turnSpeed = 50f;
+
+    private float maxFuel = 10f;
+    private float fuelAmount;
 
     // Event Handlers
     public event EventHandler OnUpForce;
@@ -24,11 +28,23 @@ public class Lander : MonoBehaviour
         landerRb = GetComponent<Rigidbody2D>();
 
         Instance = this;
+
+        fuelAmount = maxFuel;
     }
+
     // Move Lander
     private void Update()
     {
         OnBeforeForce?.Invoke(this, EventArgs.Empty);
+        if (fuelAmount <= 0)
+        {
+            return;
+        }
+
+        if (Keyboard.current.wKey.isPressed || Keyboard.current.dKey.isPressed || Keyboard.current.aKey.isPressed)
+        {
+            ConsumeFuel();
+        }
         if (Keyboard.current.wKey.isPressed)
         {
             // Move up
@@ -48,9 +64,12 @@ public class Lander : MonoBehaviour
             // move right
             landerRb.AddTorque(-turnSpeed * Time.deltaTime);
             OnRightForce?.Invoke(this, EventArgs.Empty);
-
-
         }
+    }
+
+    private void ConsumeFuel()
+    {
+        fuelAmount -= Time.deltaTime;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -63,6 +82,7 @@ public class Lander : MonoBehaviour
         if (collision.gameObject.TryGetComponent<FuelPickup>(out FuelPickup fuelPickup))
         {
             // add fuel
+            fuelAmount = maxFuel;
 
             // Destroy the fuel pickup
 
@@ -75,5 +95,11 @@ public class Lander : MonoBehaviour
             // Destroy the coin pickup
             coinPickup.DestroySelf();
         }
+    }
+
+    public float GetFuelAmountNormalized()
+    {
+        // (value - min) / (max - min) since min is 0 i can leave that out
+        return fuelAmount / maxFuel;
     }
 }
