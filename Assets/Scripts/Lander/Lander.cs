@@ -5,8 +5,9 @@ public class Lander : MonoBehaviour
 {
 
     private Rigidbody2D landerRb;
-    private float landerSpeed = 2f;
-    private float torqueSpeed = .5f;
+    [Header("Lander Speed")]
+    [SerializeField] private float landerSpeed = 550f;
+    [SerializeField] private float turnSpeed = 50f;
 
     private void Awake()
     {
@@ -18,19 +19,29 @@ public class Lander : MonoBehaviour
         if (Keyboard.current.wKey.isPressed)
         {
             // Move up
-            landerRb.linearVelocityY = landerSpeed;
+            landerRb.AddForce(transform.up * landerSpeed * Time.deltaTime);
         }
 
         if (Keyboard.current.aKey.isPressed)
         {
             // move left
-            landerRb.AddTorque(torqueSpeed);
+            landerRb.AddTorque(turnSpeed * Time.deltaTime);
         }
         if (Keyboard.current.dKey.isPressed)
         {
             // move right
-            landerRb.AddTorque(-torqueSpeed);
+            landerRb.AddTorque(-turnSpeed * Time.deltaTime);
 
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Handle landing and crashes
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
     }
 }
