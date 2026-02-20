@@ -24,7 +24,6 @@ public class PausedUI : MonoBehaviour
 
         mainMenuButton.onClick.AddListener(() =>
         {
-
             SceneLoader.LoadScene(SceneLoader.Scene.MenuScene);
         });
 
