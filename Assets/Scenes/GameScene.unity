@@ -331,7 +331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 67900307044645530, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5626142120532356289, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
       propertyPath: playOnAwake
@@ -387,9 +387,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7777506112856376982, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
   m_PrefabInstance: {fileID: 270794690}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &270794692 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 67900307044645530, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
+--- !u!198 &270794694 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5626142120532356289, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
   m_PrefabInstance: {fileID: 270794690}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &386768482
@@ -681,7 +681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 67900307044645530, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5626142120532356289, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
       propertyPath: playOnAwake
@@ -737,9 +737,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7777506112856376982, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
   m_PrefabInstance: {fileID: 799953838}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &799953840 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 67900307044645530, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
+--- !u!198 &799953842 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5626142120532356289, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
   m_PrefabInstance: {fileID: 799953838}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &811234312
@@ -880,9 +880,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df17d7cfd8012c4da194cc96ab631da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThrusterVisuals
-  middleThruster: {fileID: 1208828169}
-  rightThruster: {fileID: 270794692}
-  leftThruster: {fileID: 799953840}
+  middleThruster: {fileID: 1208828171}
+  rightThruster: {fileID: 270794694}
+  leftThruster: {fileID: 799953842}
 --- !u!1 &1075584711
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1065,50 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1200941881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1200941883}
+  - component: {fileID: 1200941882}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1200941882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200941881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048d2e87000ce3d42be33dc02a76ba4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!4 &1200941883
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200941881}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1208828167
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1079,7 +1123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 67900307044645530, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5626142120532356289, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
       propertyPath: playOnAwake
@@ -1135,9 +1179,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7777506112856376982, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
   m_PrefabInstance: {fileID: 1208828167}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1208828169 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 67900307044645530, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
+--- !u!198 &1208828171 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5626142120532356289, guid: 491bc9f68306cad40a65002e796205eb, type: 3}
   m_PrefabInstance: {fileID: 1208828167}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1280325769
@@ -1949,3 +1993,4 @@ SceneRoots:
   - {fileID: 386768483}
   - {fileID: 1807400037}
   - {fileID: 798300931}
+  - {fileID: 1200941883}

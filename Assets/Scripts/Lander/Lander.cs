@@ -70,8 +70,8 @@ public class Lander : MonoBehaviour
         }
         if (collision.gameObject.TryGetComponent<CoinPickup>(out CoinPickup coinPickup))
         {
-            // add fuel
-
+            // add points
+            GameManager.Instance.AddScore(coinPickup.GetPoints());
             // Destroy the coin pickup
             coinPickup.DestroySelf();
         }
