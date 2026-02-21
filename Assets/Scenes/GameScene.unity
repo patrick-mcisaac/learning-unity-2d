@@ -898,6 +898,7 @@ MonoBehaviour:
   middleThruster: {fileID: 1208828171}
   rightThruster: {fileID: 270794694}
   leftThruster: {fileID: 799953842}
+  explosionParticles: {fileID: 570857052369263401, guid: 6417a7f60d478884997c6c9ac491d28a, type: 3}
 --- !u!1 &913982590
 GameObject:
   m_ObjectHideFlags: 0

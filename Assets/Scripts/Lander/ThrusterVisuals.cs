@@ -8,6 +8,8 @@ public class ThrusterVisuals : MonoBehaviour
     [SerializeField] private ParticleSystem rightThruster;
     [SerializeField] private ParticleSystem leftThruster;
 
+    [SerializeField] private GameObject explosionParticles;
+
     private void Awake()
     {
         SetEnableParticleSystem(middleThruster, false);
@@ -21,6 +23,19 @@ public class ThrusterVisuals : MonoBehaviour
         Lander.Instance.OnRightForce += Lander_OnRightForce;
         Lander.Instance.OnLeftForce += Lander_OnLeftForce;
         Lander.Instance.OnBeforeForce += Lander_OnBeforeForce;
+
+        Lander.Instance.OnLanded += Lander_OnLanded;
+    }
+
+    private void Lander_OnLanded(object sender, Lander.OnLandedEventArgs e)
+    {
+        switch (e.landingType)
+        {
+            case Lander.LandingType.Crash:
+                Instantiate(explosionParticles, transform.position, Quaternion.identity);
+                gameObject.SetActive(false);
+                break;
+        }
     }
 
     private void SetEnableParticleSystem(ParticleSystem particleSystem, bool enabled)

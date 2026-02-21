@@ -104,6 +104,5 @@ public class GameManager : MonoBehaviour
     private void Lander_OnLanded(object sender, Lander.OnLandedEventArgs e)
     {
         AddScore(e.score * e.scoreMultiplier);
-        state = GameState.GameOver;
     }
 }

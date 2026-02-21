@@ -124,7 +124,7 @@ public class Lander : MonoBehaviour
         // Handle landing and crashes
         if (!collision.gameObject.TryGetComponent<LaunchPad>(out LaunchPad launchPad))
         {
-            Debug.Log("Crash!");
+
             OnLanded?.Invoke(this, new OnLandedEventArgs
             {
                 landingType = LandingType.Crash,
@@ -132,9 +132,9 @@ public class Lander : MonoBehaviour
                 landingSpeed = 0,
                 score = 0,
                 scoreMultiplier = 0
-
             });
             return;
+
         }
 
         // Get angle of impact
