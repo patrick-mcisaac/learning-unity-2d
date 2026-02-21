@@ -4,26 +4,38 @@ using UnityEngine;
 
 public class CinemachineCameraZoom2D : MonoBehaviour
 {
-    [SerializeField] private new CinemachineCamera camera;
-    [SerializeField] private CameraTarget startTarget;
+
+    public static CinemachineCameraZoom2D Instance;
+    [SerializeField] private CinemachineCamera cinemachineCamera;
     [SerializeField] private CameraTarget lander;
 
     private const float NORMAL_ORTHOGRAPHIC_SIZE = 10f;
 
-    [SerializeField] private float startOrthoSize;
+    // private float startOrthoSize = 15f;
 
-    private void Start()
+    private void Awake()
     {
-        camera.Target = startTarget;
-        camera.Lens.OrthographicSize = startOrthoSize;
+        Instance = this;
     }
 
     private void Update()
     {
         float zoomSpeed = 2f;
-        camera.Target = lander;
-        camera.Lens.OrthographicSize = Mathf.Lerp(camera.Lens.OrthographicSize, NORMAL_ORTHOGRAPHIC_SIZE, zoomSpeed * Time.deltaTime);
+        cinemachineCamera.Target = lander;
+        cinemachineCamera.Lens.OrthographicSize = Mathf.Lerp(cinemachineCamera.Lens.OrthographicSize, NORMAL_ORTHOGRAPHIC_SIZE, zoomSpeed * Time.deltaTime);
     }
+
+    public void SetCameraPosition(Transform target)
+    {
+        cinemachineCamera.Target.TrackingTarget = target;
+    }
+
+    public void SetCameraOrthoAmount(float amount)
+    {
+        cinemachineCamera.Lens.OrthographicSize = amount;
+    }
+
+
 
 
 }

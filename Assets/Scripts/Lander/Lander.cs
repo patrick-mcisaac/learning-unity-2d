@@ -21,7 +21,23 @@ public class Lander : MonoBehaviour
     public event EventHandler OnLeftForce;
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
-    public event EventHandler OnGameStart;
+    public event EventHandler<OnLandedEventArgs> OnLanded;
+
+    public enum LandingType
+    {
+        Success,
+        Crash
+    }
+
+    public class OnLandedEventArgs : EventArgs
+    {
+        public LandingType landingType;
+        public int score;
+        public float dotVector;
+        public float landingSpeed;
+        public int scoreMultiplier;
+    }
+
 
     // Singleton
     public static Lander Instance;
@@ -43,44 +59,59 @@ public class Lander : MonoBehaviour
     // Move Lander
     private void Update()
     {
-        if (GameManager.Instance.state == GameManager.GameState.WaitingToStart
-        && Keyboard.current.wKey.isPressed
-        || Keyboard.current.dKey.isPressed
-        || Keyboard.current.aKey.isPressed)
-        {
-            GameManager.Instance.state = GameManager.GameState.Normal;
-            OnGameStart?.Invoke(this, EventArgs.Empty);
-        }
         OnBeforeForce?.Invoke(this, EventArgs.Empty);
-        if (fuelAmount <= 0)
+        switch (GameManager.Instance.state)
         {
-            return;
+            case GameManager.GameState.WaitingToStart:
+                if (Keyboard.current.wKey.isPressed ||
+                    Keyboard.current.dKey.isPressed ||
+                    Keyboard.current.aKey.isPressed)
+                {
+                    GameManager.Instance.state = GameManager.GameState.Normal;
+                }
+                break;
+            case GameManager.GameState.Normal:
+                if (fuelAmount <= 0)
+                {
+                    return;
+                }
+
+                if (Keyboard.current.wKey.isPressed ||
+                    Keyboard.current.dKey.isPressed ||
+                    Keyboard.current.aKey.isPressed)
+                {
+                    ConsumeFuel();
+                }
+                if (Keyboard.current.wKey.isPressed)
+                {
+                    // Move up
+                    landerRb.AddForce(transform.up * landerSpeed * Time.deltaTime);
+                    OnUpForce?.Invoke(this, EventArgs.Empty);
+                }
+
+                if (Keyboard.current.aKey.isPressed)
+                {
+                    // move left
+                    landerRb.AddTorque(turnSpeed * Time.deltaTime);
+                    OnLeftForce?.Invoke(this, EventArgs.Empty);
+
+                }
+                if (Keyboard.current.dKey.isPressed)
+                {
+                    // move right
+                    landerRb.AddTorque(-turnSpeed * Time.deltaTime);
+                    OnRightForce?.Invoke(this, EventArgs.Empty);
+                }
+                break;
+            case GameManager.GameState.Loading:
+
+                break;
+            case GameManager.GameState.GameOver:
+                break;
         }
 
-        if (Keyboard.current.wKey.isPressed || Keyboard.current.dKey.isPressed || Keyboard.current.aKey.isPressed)
-        {
-            ConsumeFuel();
-        }
-        if (Keyboard.current.wKey.isPressed)
-        {
-            // Move up
-            landerRb.AddForce(transform.up * landerSpeed * Time.deltaTime);
-            OnUpForce?.Invoke(this, EventArgs.Empty);
-        }
 
-        if (Keyboard.current.aKey.isPressed)
-        {
-            // move left
-            landerRb.AddTorque(turnSpeed * Time.deltaTime);
-            OnLeftForce?.Invoke(this, EventArgs.Empty);
 
-        }
-        if (Keyboard.current.dKey.isPressed)
-        {
-            // move right
-            landerRb.AddTorque(-turnSpeed * Time.deltaTime);
-            OnRightForce?.Invoke(this, EventArgs.Empty);
-        }
     }
 
     private void ConsumeFuel()
@@ -94,6 +125,15 @@ public class Lander : MonoBehaviour
         if (!collision.gameObject.TryGetComponent<LaunchPad>(out LaunchPad launchPad))
         {
             Debug.Log("Crash!");
+            OnLanded?.Invoke(this, new OnLandedEventArgs
+            {
+                landingType = LandingType.Crash,
+                dotVector = 0,
+                landingSpeed = 0,
+                score = 0,
+                scoreMultiplier = 0
+
+            });
             return;
         }
 
@@ -101,30 +141,43 @@ public class Lander : MonoBehaviour
         float dot = Vector2.Dot(transform.up, Vector2.up);
         float minAngle = 0.95f;
 
-        if (dot < minAngle)
-        {
-            Debug.Log("Too steep angle, CRASH!");
-            return;
-        }
-
         // Get speed
         float speed = collision.relativeVelocity.magnitude;
         float maxSpeed = 4f;
-        if (speed > maxSpeed)
+
+        if (dot < minAngle || speed > maxSpeed)
         {
-            Debug.Log("TOO FAST!! CRASH!");
+            OnLanded?.Invoke(this, new OnLandedEventArgs
+            {
+                landingType = LandingType.Crash,
+                dotVector = 0,
+                landingSpeed = 0,
+                score = 0,
+                scoreMultiplier = 0
+
+            });
             return;
         }
 
-        Debug.Log("Successful Landing!");
-        // Add points for successful landing
         float baseScore = 100f;
         float landingSpeedScore = Mathf.Clamp01(1f - (speed / maxSpeed));
         float dotScore = Mathf.Max(0f, dot);
 
         int finalScore = (int)MathF.Round(((landingSpeedScore + dotScore) / 2) * baseScore);
+        OnLanded?.Invoke(this, new OnLandedEventArgs
+        {
+            landingType = LandingType.Success,
+            dotVector = dot,
+            landingSpeed = speed,
+            score = finalScore,
+            scoreMultiplier = launchPad.GetBonusPoints()
 
-        GameManager.Instance.AddScore(finalScore * launchPad.GetBonusPoints());
+        });
+
+        // GameManager.Instance.state = GameManager.GameState.Loading;
+
+
+        // GameManager.Instance.AddScore(finalScore * launchPad.GetBonusPoints());
 
     }
 

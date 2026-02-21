@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 public class StatsUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI statsText;
+    [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private Image FuelUI;
 
     private void Update()
     {
-        statsText.text =
+        pointsText.text =
        GameManager.Instance.GetScore() + "\n" +
        0 + "\n" +
        0 + "\n"
