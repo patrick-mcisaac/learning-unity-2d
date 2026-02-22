@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private static int levelNumber = 1;
 
     private int score = 0;
+
     public GameState state;
 
     public enum GameState
@@ -25,8 +26,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (state == GameState.WaitingToStart ||
-            state == GameState.Paused ||
-            state == GameState.Loading)
+            state == GameState.Paused)
         {
             Time.timeScale = 0f;
         }
@@ -38,13 +38,10 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this.gameObject);
-        }
+
         Instance = this;
 
-        DontDestroyOnLoad(this);
+
     }
 
     public void Start()
@@ -86,7 +83,7 @@ public class GameManager : MonoBehaviour
         CinemachineCameraZoom2D.Instance.SetCameraOrthoAmount(spawnedLevel.GetZoomedOutOrthoAmount());
     }
 
-    private void SpawnNextLevel()
+    public void SpawnNextLevel()
     {
         levelNumber += 1;
 
@@ -101,8 +98,14 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void Retry()
+    {
+        SceneLoader.LoadScene(SceneLoader.Scenes.GameScene);
+    }
+
     private void Lander_OnLanded(object sender, Lander.OnLandedEventArgs e)
     {
+        state = GameState.GameOver;
         AddScore(e.score * e.scoreMultiplier);
     }
 }
