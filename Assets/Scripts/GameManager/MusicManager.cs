@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MusicManager : MonoBehaviour
 {
@@ -6,6 +8,7 @@ public class MusicManager : MonoBehaviour
     private int maxVolume = 10;
 
     public MusicManager Instance;
+    [SerializeField] private Slider musicVolumeSlider;
 
     private void Awake()
     {
@@ -18,14 +21,22 @@ public class MusicManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        musicVolumeSlider.onValueChanged.AddListener((float value) =>
+        {
+            SetVolume(musicVolumeSlider.value);
+        });
+    }
+
     public int GetVolume()
     {
         return volume;
     }
 
-    public void SetVolume()
+    private void SetVolume(float value)
     {
-        volume++;
+        volume = Mathf.FloorToInt(value * maxVolume);
     }
 
     private float GetVolumeNormalized()
