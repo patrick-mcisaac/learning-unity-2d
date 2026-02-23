@@ -63,6 +63,11 @@ public class GameManager : MonoBehaviour
         return totalScore;
     }
 
+    public void ResetTotalScore()
+    {
+        totalScore = 0;
+    }
+
     public void AddScore(int points)
     {
         score += points;
@@ -100,6 +105,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            levelNumber = 1;
             SceneLoader.LoadScene(SceneLoader.Scenes.GameOver);
         }
 

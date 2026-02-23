@@ -12,6 +12,7 @@ public class GameOverUI : MonoBehaviour
     {
         mainMenuButton.onClick.AddListener(() =>
         {
+            GameManager.Instance.ResetTotalScore();
             SceneLoader.LoadScene(SceneLoader.Scenes.MainMenu);
         });
 
