@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerControls : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class PlayerControls : MonoBehaviour
         landerControls.Disable();
     }
 
-    private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void Pause_performed(InputAction.CallbackContext obj)
     {
         OnPausePressed?.Invoke(this, EventArgs.Empty);
     }
@@ -40,5 +41,10 @@ public class PlayerControls : MonoBehaviour
     public bool IsRightActionPressed()
     {
         return landerControls.Player.Right.IsPressed();
+    }
+
+    public Vector2 IsMoving()
+    {
+        return landerControls.Player.Movement.ReadValue<Vector2>();
     }
 }

@@ -12,6 +12,7 @@ public class Lander : MonoBehaviour
 
     private float maxFuel = 10f;
     private float fuelAmount;
+    private float deadZone = 0.2f;
 
     // Event Handlers
     public event EventHandler OnUpForce;
@@ -19,6 +20,8 @@ public class Lander : MonoBehaviour
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
     public event EventHandler<OnLandedEventArgs> OnLanded;
+    public event EventHandler OnCoinPickup;
+    public event EventHandler OnFuelPickup;
 
     public enum LandingType
     {
@@ -62,7 +65,9 @@ public class Lander : MonoBehaviour
             case GameManager.GameState.WaitingToStart:
                 if (PlayerControls.Instance.IsUpActionPressed() ||
                     PlayerControls.Instance.IsLeftActionPressed() ||
-                    PlayerControls.Instance.IsRightActionPressed())
+                    PlayerControls.Instance.IsRightActionPressed() ||
+                    PlayerControls.Instance.IsMoving().x > deadZone ||
+                    PlayerControls.Instance.IsMoving().y > deadZone)
                 {
                     GameManager.Instance.state = GameManager.GameState.Normal;
                 }
@@ -75,25 +80,27 @@ public class Lander : MonoBehaviour
 
                 if (PlayerControls.Instance.IsUpActionPressed() ||
                     PlayerControls.Instance.IsLeftActionPressed() ||
-                    PlayerControls.Instance.IsRightActionPressed())
+                    PlayerControls.Instance.IsRightActionPressed() ||
+                    PlayerControls.Instance.IsMoving().x > deadZone ||
+                    PlayerControls.Instance.IsMoving().y > deadZone)
                 {
                     ConsumeFuel();
                 }
-                if (PlayerControls.Instance.IsUpActionPressed())
+                if (PlayerControls.Instance.IsUpActionPressed() || PlayerControls.Instance.IsMoving().y > deadZone)
                 {
                     // Move up
                     landerRb.AddForce(transform.up * landerSpeed * Time.deltaTime);
                     OnUpForce?.Invoke(this, EventArgs.Empty);
                 }
 
-                if (PlayerControls.Instance.IsLeftActionPressed())
+                if (PlayerControls.Instance.IsLeftActionPressed() || PlayerControls.Instance.IsMoving().x < -deadZone)
                 {
                     // move left
                     landerRb.AddTorque(turnSpeed * Time.deltaTime);
                     OnLeftForce?.Invoke(this, EventArgs.Empty);
 
                 }
-                if (PlayerControls.Instance.IsRightActionPressed())
+                if (PlayerControls.Instance.IsRightActionPressed() || PlayerControls.Instance.IsMoving().x > deadZone)
                 {
                     // move right
                     landerRb.AddTorque(-turnSpeed * Time.deltaTime);
@@ -179,15 +186,15 @@ public class Lander : MonoBehaviour
         {
             // add fuel
             fuelAmount = maxFuel;
-
+            OnFuelPickup?.Invoke(this, EventArgs.Empty);
             // Destroy the fuel pickup
-
             fuelPickup.DestroySelf();
         }
         if (collision.gameObject.TryGetComponent<CoinPickup>(out CoinPickup coinPickup))
         {
             // add points
             GameManager.Instance.AddScore(coinPickup.GetPoints());
+            OnCoinPickup?.Invoke(this, EventArgs.Empty);
             // Destroy the coin pickup
             coinPickup.DestroySelf();
         }

@@ -24,6 +24,7 @@ public class GameOverUI : MonoBehaviour
 
     private void Start()
     {
+        mainMenuButton.Select();
         statsText.text = "Final Score: " + GameManager.Instance.GetTotalScore();
     }
 }

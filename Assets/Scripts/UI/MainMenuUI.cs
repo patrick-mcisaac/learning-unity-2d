@@ -18,4 +18,9 @@ public class MainMenuUI : MonoBehaviour
             Application.Quit();
         });
     }
+
+    private void Start()
+    {
+        startButton.Select();
+    }
 }
