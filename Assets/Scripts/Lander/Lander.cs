@@ -1,9 +1,6 @@
 using System;
-using System.Xml.Schema;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.InputSystem;
+
 
 public class Lander : MonoBehaviour
 {
@@ -63,9 +60,9 @@ public class Lander : MonoBehaviour
         switch (GameManager.Instance.state)
         {
             case GameManager.GameState.WaitingToStart:
-                if (Keyboard.current.wKey.isPressed ||
-                    Keyboard.current.dKey.isPressed ||
-                    Keyboard.current.aKey.isPressed)
+                if (PlayerControls.Instance.IsUpActionPressed() ||
+                    PlayerControls.Instance.IsLeftActionPressed() ||
+                    PlayerControls.Instance.IsRightActionPressed())
                 {
                     GameManager.Instance.state = GameManager.GameState.Normal;
                 }
@@ -76,34 +73,35 @@ public class Lander : MonoBehaviour
                     return;
                 }
 
-                if (Keyboard.current.wKey.isPressed ||
-                    Keyboard.current.dKey.isPressed ||
-                    Keyboard.current.aKey.isPressed)
+                if (PlayerControls.Instance.IsUpActionPressed() ||
+                    PlayerControls.Instance.IsLeftActionPressed() ||
+                    PlayerControls.Instance.IsRightActionPressed())
                 {
                     ConsumeFuel();
                 }
-                if (Keyboard.current.wKey.isPressed)
+                if (PlayerControls.Instance.IsUpActionPressed())
                 {
                     // Move up
                     landerRb.AddForce(transform.up * landerSpeed * Time.deltaTime);
                     OnUpForce?.Invoke(this, EventArgs.Empty);
                 }
 
-                if (Keyboard.current.aKey.isPressed)
+                if (PlayerControls.Instance.IsLeftActionPressed())
                 {
                     // move left
                     landerRb.AddTorque(turnSpeed * Time.deltaTime);
                     OnLeftForce?.Invoke(this, EventArgs.Empty);
 
                 }
-                if (Keyboard.current.dKey.isPressed)
+                if (PlayerControls.Instance.IsRightActionPressed())
                 {
                     // move right
                     landerRb.AddTorque(-turnSpeed * Time.deltaTime);
                     OnRightForce?.Invoke(this, EventArgs.Empty);
                 }
+
                 break;
-            case GameManager.GameState.Loading:
+            case GameManager.GameState.Paused:
 
                 break;
             case GameManager.GameState.GameOver:
@@ -171,13 +169,7 @@ public class Lander : MonoBehaviour
             landingSpeed = speed,
             score = finalScore,
             scoreMultiplier = launchPad.GetBonusPoints()
-
         });
-
-        // GameManager.Instance.state = GameManager.GameState.Loading;
-
-
-        // GameManager.Instance.AddScore(finalScore * launchPad.GetBonusPoints());
 
     }
 
@@ -205,5 +197,15 @@ public class Lander : MonoBehaviour
     {
         // (value - min) / (max - min) since min is 0 i can leave that out
         return fuelAmount / maxFuel;
+    }
+
+    public float GetLinearVelocityX()
+    {
+        return landerRb.linearVelocity.x;
+    }
+
+    public float GetLinearVelocityY()
+    {
+        return landerRb.linearVelocity.y;
     }
 }

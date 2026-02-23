@@ -33,6 +33,7 @@ public class LandedUI : MonoBehaviour
             bannerText.text = "SUCCESSFUL LANDING!";
             nextButtonAction = GameManager.Instance.SpawnNextLevel;
             buttonText.text = "CONTINUE";
+            scoreText.text = (e.score * e.scoreMultiplier).ToString();
         }
         else
         {

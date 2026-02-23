@@ -7,7 +7,7 @@ public static class SceneLoader
     {
         MainMenu,
         GameScene,
-        GameOverScene
+        GameOver
     }
 
     public static void LoadScene(Scenes scene)

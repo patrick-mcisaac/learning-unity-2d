@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     private int score = 0;
 
+    private static int totalScore;
+
     public GameState state;
 
     public enum GameState
@@ -17,8 +19,8 @@ public class GameManager : MonoBehaviour
         WaitingToStart,
         Normal,
         Paused,
-        GameOver,
-        Loading
+        GameOver
+
     }
 
     [SerializeField] private List<Level> levelList;
@@ -38,10 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-
         Instance = this;
-
-
     }
 
     public void Start()
@@ -50,11 +49,18 @@ public class GameManager : MonoBehaviour
         state = GameState.WaitingToStart;
 
         Lander.Instance.OnLanded += Lander_OnLanded;
+        PausedUI.Instance.OnPauseUnPause += PausedUI_OnPauseUnPause;
+
     }
 
     public int GetScore()
     {
         return score;
+    }
+
+    public int GetTotalScore()
+    {
+        return totalScore;
     }
 
     public void AddScore(int points)
@@ -86,15 +92,16 @@ public class GameManager : MonoBehaviour
     public void SpawnNextLevel()
     {
         levelNumber += 1;
+        totalScore += score;
 
         if (GetLevel() != null)
         {
             SceneLoader.LoadScene(SceneLoader.Scenes.GameScene);
         }
-        // else
-        // {
-        //     SceneLoader.LoadScene(SceneLoader.Scenes.GameOverScene);
-        // }
+        else
+        {
+            SceneLoader.LoadScene(SceneLoader.Scenes.GameOver);
+        }
 
     }
 
@@ -107,5 +114,10 @@ public class GameManager : MonoBehaviour
     {
         state = GameState.GameOver;
         AddScore(e.score * e.scoreMultiplier);
+    }
+
+    private void PausedUI_OnPauseUnPause(object sender, PausedUI.OnPauseUnPauseEvent e)
+    {
+        state = e.state;
     }
 }
