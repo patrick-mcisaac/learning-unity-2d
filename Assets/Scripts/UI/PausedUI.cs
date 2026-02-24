@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PausedUI : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class PausedUI : MonoBehaviour
         public GameManager.GameState state;
     }
 
-    private void Awake()
-    {
-    }
+    [SerializeField] public Slider sfxSlider;
+    [SerializeField] public Slider musicSlider;
+
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class PausedUI : MonoBehaviour
         // Lander.Instance.OnStateChange += Lander_OnStateChange;
         PlayerControls.Instance.OnPausePressed += PlayerControls_OnPausePressed;
         Hide();
+        musicSlider.Select();
     }
 
     private void Hide()
@@ -50,5 +52,11 @@ public class PausedUI : MonoBehaviour
         {
             Hide();
         }
+    }
+
+    public void FillVolume(float sfx, float music)
+    {
+        sfxSlider.value = Mathf.Pow(10f, sfx / 20);
+        musicSlider.value = Mathf.Pow(10f, music / 20f);
     }
 }

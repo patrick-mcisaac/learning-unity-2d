@@ -14,9 +14,11 @@ public class SoundManager : MonoBehaviour
     private int volume = 6;
 
 
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+
     }
 
     private void Start()
